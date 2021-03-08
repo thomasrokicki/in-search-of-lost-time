@@ -49,14 +49,34 @@ python3 ff_downloader.py
 
 cd ../chrome
 python3 chrome_downloader.py
+python3 download_drivers.py # As ChromeDrivers work only for a few versions, we must download them automatically.
 ```
-The downloaded versions are now set in the `browser` folders.
+The downloaded versions are now set in the `browser` folders. You can also use the downloaders to download only specific versions.
 
-Next, you can run tests with Selenium. For instance, to test timers on all available Firefox browsers and visualize the jitter's evolution, you can run
+Next, you can run tests with Selenium. For instance, to run all tests on all available Firefox browsers, you can run
 
 ```Bash
-python3 ff_tester.py --distribution
-python3 jitter_boxplot -b firefox
+python3 ff_tester.py
 ```
 
-More information on tests and plots can be found [here](timer_tester/README.md)
+In a similar way, to test in Chrome you can run
+```Bash
+python3 chrome_tester.py
+```
+
+More information on tests can be found [here](timer_tester/README.md)
+
+Finally, after computing the raw data, you can use scripts to plot graphs used in the paper.
+
+```Bash
+# Plots the hit/miss histogram for a certain version of a browser.
+python3 hit_miss.py --plot -b $your_browser -v $your_version --clock performance.now()
+
+# Plots the evolution of the error rate in function of repetitions
+python3 error_rate_repetitions.py --plot -b $your_browser -v $your_version --clock performance.now
+
+# Plots the evolution of the number of ticks in a clock period - This shows the changes on jitter and resolution.
+python3 jitter_boxplot.py -b $your_browser
+
+
+```
