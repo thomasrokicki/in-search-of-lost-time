@@ -6,10 +6,11 @@ It is initially meant to work in pair with python scripts and selenium webdriver
 ## How to run
 You need Docker to run the server.
 To run it, run in this folder:
+```Bash
+docker-compose up
+```
 
-` docker-compose up `
-
-Depending on your docker installation, you might need to run it with sudo
+Depending on your docker installation, you might need to run it with sudo. If the docker daemon is not running, you can start it with ``` systemctl start docker ```. 
 You can then access the server at http://localhost:8000.
 
 ## Content
