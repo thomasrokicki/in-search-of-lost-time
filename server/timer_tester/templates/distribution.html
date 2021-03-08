@@ -1,0 +1,43 @@
+<head>
+  <meta charset="utf-8" />
+  <title>  Distibution of ticks per clock period </title>
+  {% load static %}
+  <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}"/>
+
+  {% load static %}
+  <script type="text/javascript" src=" {% static "js/config.js" %}"></script>
+
+  {% load static %}
+  <script type="text/javascript" src=" {% static "js/utils.js" %}"></script>
+
+  {% load static %}
+  <script type="text/javascript" src=" {% static "js/performance_now_clock.js" %}"></script>
+
+  {% load static %}
+  <script type="text/javascript" src=" {% static "js/graphs.js" %}"></script>
+
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  
+  {% load static %}
+  <script type="text/javascript" src=" {% static "js/perf_distribution.js" %}"></script>
+
+</head>
+
+<body>
+  <h1>  Distibution of ticks per clock period </h1>
+  <p id='coop'></p>
+  <script type="text/javascript">
+    if (self.crossOriginIsolated) {
+      document.getElementById("coop").textContent = "COOP/COEP is on"
+    }
+    else {
+      document.getElementById("coop").textContent = "COOP/COEP is off"
+    }
+  </script>
+  <br>
+Number of measurements:
+<input type="number" id="repetitions" name="repetitions" value=10000></input>
+ (Keep in mind that the longer the base resolution is, the longer the computing)
+<br>
+<button type="distribution" onclick="distribution()">Plot the distribution !</button>
+</body>

@@ -1,0 +1,10 @@
+*pyc
+timer_tester/firefox/browsers/
+timer_tester/firefox/zips/*
+timer_tester/firefox/results/
+timer_tester/chrome/browsers/
+timer_tester/chrome/zips/*
+timer_tester/chrome/chromedrivers/
+timer_tester/chrome/results/
+*.log
+*.zip

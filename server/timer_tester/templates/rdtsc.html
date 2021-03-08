@@ -1,0 +1,83 @@
+<head>
+  <meta charset="utf-8" />
+  <title> Rdtsc Measurements</title>
+  {% load static %}
+  <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}"/>
+
+  {% load static %}
+  <script type="text/javascript" src=" {% static "js/Victim.js" %}"></script>
+
+  {% load static %}
+  <script type="text/javascript" src=" {% static "js/config.js" %}"></script>
+
+  {% load static %}
+  <script type="text/javascript" src=" {% static "js/utils.js" %}"></script>
+
+  {% load static %}
+  <script type="text/javascript" src=" {% static "js/performance_now_clock.js" %}"></script>
+
+  {% load static %}
+  <script type="text/javascript" src=" {% static "js/sab_clock.js" %}"></script>
+
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+  <script type="text/javascript">
+    if (performance.rdtsc) {
+      var rdtsc_js = document.createElement("script");
+      {% load static %}
+      rdtsc_js.src = " {% static "js/rdtsc.js" %}"
+      document.getElementsByTagName('head')[0].appendChild(rdtsc_js);
+    }
+  </script>
+
+
+
+</head>
+
+<body>
+  <h1> Measurements with performance.rdtsc() </h1>
+  <p id='coop'></p>
+  <script type="text/javascript">
+    if (self.crossOriginIsolated) {
+      document.getElementById("coop").textContent = "COOP/COEP is on"
+    }
+    else {
+      document.getElementById("coop").textContent = "COOP/COEP is off"
+    }
+  </script>
+
+  <p>
+    This page require a custom version of browsers, where performance.rdtsc() is defined. <br>
+    This function allows to retrieve a cycle accurate timer, used for measurement purpose. <br>
+    It does not work without it. <br>
+  </p>
+
+  <p id="rdtsc">
+  </p>
+
+  <script type="text/javascript">
+    if (performance.rdtsc) {
+      document.getElementById("rdtsc").textContent= "performance.rdtsc is defined";
+      document.getElementById("rdtsc").style.color = "green";
+    }
+    else {
+      document.getElementById("rdtsc").textContent = "performance.rdtsc is not defined";
+      document.getElementById("rdtsc").style.color = "red";
+      document.getElementById("rdtsc").style.fontSize = "x-large";
+    }
+  </script>
+
+
+
+  <div id="tests">
+  </div>
+
+  <script type="text/javascript">
+    if (performance.rdtsc) {
+      const html = ` <input type='number' id='repetitions' name='repetitions' value=1000></input>
+          <button type='button' name='button' onclick='displayMeasurements()''>Measure operations</button> <br>
+          <div id='results'></div> `
+      document.getElementById("tests").innerHTML = html
+    }
+  </script>
+</body>

@@ -1,0 +1,65 @@
+<head>
+  <meta charset="utf-8" />
+  <title> Cache hit/miss histogram</title>
+  {% load static %}
+  <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}"/>
+
+  {% load static %}
+  <script type="text/javascript" src=" {% static "js/Victim.js" %}"></script>
+
+  {% load static %}
+  <script type="text/javascript" src=" {% static "js/config.js" %}"></script>
+
+  {% load static %}
+  <script type="text/javascript" src=" {% static "js/utils.js" %}"></script>
+
+
+  {% load static %}
+  <script type="text/javascript" src=" {% static "js/hit_miss.js" %}"></script>
+
+  {% load static %}
+  <script type="text/javascript" src=" {% static "js/performance_now_clock.js" %}"></script>
+
+  {% load static %}
+  <script type="text/javascript" src=" {% static "js/sab_clock.js" %}"></script>
+
+  {% load static %}
+  <script type="text/javascript" src=" {% static "js/graphs.js" %}"></script>
+
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+
+</head>
+
+<body>
+  <h1>  Hit/Miss Histogram test ! </h1>
+  <p id='coop'></p>
+  <script type="text/javascript">
+    if (self.crossOriginIsolated) {
+      document.getElementById("coop").textContent = "COOP/COEP is on"
+    }
+    else {
+      document.getElementById("coop").textContent = "COOP/COEP is off"
+    }
+  </script>
+  <br>
+  Clock:
+  <select id="clock">
+    <option value="performance.now"> performance.now() interpolation </option>
+  </select>
+
+  <script type="text/javascript">
+    var browser = getBrowser()
+    if ((browser.name == "Chrome") || (browser.name == "Firefox" && self.crossOriginIsolated)) {
+      var option = document.createElement("option");
+      option.value = "SharedArrayBuffer"
+      option.text = "SharedArrayBuffer";
+      document.getElementById("clock").add(option);
+    }
+  </script>
+
+
+  <input type="number" id="repetitions" name="repetitions" value=100></input>
+
+  <button type="button" name="button" onclick="plotHitMiss()">Plot histogram</button>
+</body>

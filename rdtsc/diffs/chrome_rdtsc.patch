@@ -1,0 +1,48 @@
+diff -ruN chromium/src/third_party/blink/renderer/core/timing/dom_high_res_time_stamp.idl chromium-rdtsc/src/third_party/blink/renderer/core/timing/dom_high_res_time_stamp.idl
+--- chromium/src/third_party/blink/renderer/core/timing/dom_high_res_time_stamp.idl	2021-03-05 10:08:07.086782016 +0100
++++ chromium-rdtsc/src/third_party/blink/renderer/core/timing/dom_high_res_time_stamp.idl	2021-03-05 10:07:50.709835529 +0100
+@@ -5,3 +5,4 @@
+ // https://w3c.github.io/hr-time/#dom-domhighrestimestamp
+
+ typedef double DOMHighResTimeStamp;
++typedef double uint64_t;
+diff -ruN chromium/src/third_party/blink/renderer/core/timing/performance.cc chromium-rdtsc/src/third_party/blink/renderer/core/timing/performance.cc
+--- chromium/src/third_party/blink/renderer/core/timing/performance.cc	2021-03-05 10:08:27.437715518 +0100
++++ chromium-rdtsc/src/third_party/blink/renderer/core/timing/performance.cc	2021-03-05 10:07:50.708835532 +0100
+@@ -1020,7 +1020,13 @@
+ DOMHighResTimeStamp Performance::now() const {
+   return MonotonicTimeToDOMHighResTimeStamp(tick_clock_->NowTicks());
+ }
+-
++std::uint64_t Performance::rdtsc(){
++    unsigned int lo,hi;
++    __asm__ __volatile__ ("mfence");
++    __asm__ __volatile__ ("rdtsc" : "=a" (lo), "=d" (hi));
++    __asm__ __volatile__ ("mfence");
++    return ((std::uint64_t)hi << 32) | lo;
++}
+ // static
+ bool Performance::CanExposeNode(Node* node) {
+   if (!node || !node->isConnected() || node->IsInShadowTree())
+diff -ruN chromium/src/third_party/blink/renderer/core/timing/performance.h chromium-rdtsc/src/third_party/blink/renderer/core/timing/performance.h
+--- chromium/src/third_party/blink/renderer/core/timing/performance.h	2021-03-05 10:08:35.807688167 +0100
++++ chromium-rdtsc/src/third_party/blink/renderer/core/timing/performance.h	2021-03-05 10:07:50.708835532 +0100
+@@ -121,6 +121,7 @@
+   // exposing to web.
+   DOMHighResTimeStamp MonotonicTimeToDOMHighResTimeStamp(base::TimeTicks) const;
+   DOMHighResTimeStamp now() const;
++  std::uint64_t rdtsc();
+
+   // Translate given platform monotonic time in seconds into base::TimeDelta.
+   // The result timestamp is relative to document's time origin and is
+diff -ruN chromium/src/third_party/blink/renderer/core/timing/performance.idl chromium-rdtsc/src/third_party/blink/renderer/core/timing/performance.idl
+--- chromium/src/third_party/blink/renderer/core/timing/performance.idl	2021-03-05 10:08:41.312670180 +0100
++++ chromium-rdtsc/src/third_party/blink/renderer/core/timing/performance.idl	2021-03-05 10:07:50.709835529 +0100
+@@ -36,6 +36,7 @@
+ [Exposed=(Window,Worker)]
+ interface Performance : EventTarget {
+     [Affects=Nothing] DOMHighResTimeStamp now();
++    uint64_t rdtsc();
+     readonly attribute DOMHighResTimeStamp timeOrigin;
+
+     // Performance Timeline

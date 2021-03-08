@@ -1,0 +1,46 @@
+diff -ruaN mozilla-central/dom/performance/Performance.cpp mozilla-central-rdtsc/dom/performance/Performance.cpp
+--- mozilla-central/dom/performance/Performance.cpp	2020-03-11 11:29:20.374302234 +0100
++++ mozilla-central/dom/performance/Performance.cpp	2020-03-11 10:11:03.102808618 +0100
+@@ -98,6 +98,11 @@
+ }
+
+
++std::uint64_t Performance::Rdtsc(){
++    unsigned int lo,hi;
++    __asm__ __volatile__ ("mfence");
++    __asm__ __volatile__ ("rdtsc" : "=a" (lo), "=d" (hi));
++    __asm__ __volatile__ ("mfence");
++    return ((std::uint64_t)hi << 32) | lo;
++}
+
+
+ DOMHighResTimeStamp Performance::NowUnclamped() const {
+diff -ruaN mozilla-central/dom/performance/Performance.h mozilla-central-rdtsc/dom/performance/Performance.h
+--- mozilla-central/dom/performance/Performance.h	2020-03-11 11:29:17.611284504 +0100
++++ mozilla-central/dom/performance/Performance.h	2020-03-11 09:47:24.319455092 +0100
+@@ -61,6 +61,7 @@
+
+   DOMHighResTimeStamp Now();
+
++  std::uint64_t Rdtsc();
+
+   DOMHighResTimeStamp NowUnclamped() const;
+
+diff -ruaN mozilla-central/dom/webidl/Performance.webidl mozilla-central-rdtsc/dom/webidl/Performance.webidl
+--- mozilla-central/dom/webidl/Performance.webidl	2020-03-11 11:29:56.282517441 +0100
++++ mozilla-central/dom/webidl/Performance.webidl	2020-03-10 15:59:29.892046739 +0100
+@@ -16,12 +16,14 @@
+
+ typedef double DOMHighResTimeStamp;
+ typedef sequence <PerformanceEntry> PerformanceEntryList;
++typedef double uint64_t;
+
+ // https://w3c.github.io/hr-time/#sec-performance
+ [Exposed=(Window,Worker)]
+ interface Performance : EventTarget {
+   [DependsOn=DeviceState, Affects=Nothing]
+   DOMHighResTimeStamp now();
++  uint64_t rdtsc();
+
+
+   [Constant]

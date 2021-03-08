@@ -1,0 +1,38 @@
+<head>
+  <meta charset="utf-8" />
+  <title> In Search of Lost Time </title>
+  {% load static %}
+  <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}"/>
+</head>
+
+<h1> In Search of Lost Time - Index </h1>
+
+<p>This server is associated with the paper "In Search of Lost Time: A Review of JavaScript Timers in Browsers" by Thomas ROKICKI, Clémentine MAURICE and Pierre LAPERDRIX </p>
+<br>
+<p>
+  It features all client side experiments used for the results in the paper. <br>
+  The code was initially meant to be used automatically with selenium webdriver, but it is still usable with only the server.
+</p>
+
+<h2> Index </h2>
+<nav>
+  {% load static %}
+  <a href="{% url 'hit_miss' %}"> Cache hit/miss histogram. </a>
+  <br>
+  <br>
+  <br>
+  {% load static %}
+  <a href="{% url 'distribution' %}"> Distribution of the number of incrementation in a clock period. </a>
+  <br>
+  <br>
+  <br>
+  {% load static %}
+  <a href="{% url 'rdtsc' %}"> Measurement using performance.rdtsc </a> <div id='rdtsc_warning'></div>
+</nav>
+
+<script type="text/javascript">
+  if (!performance.rdtsc){
+    document.getElementById('rdtsc_warning').innerHTML = "<span>&#9888;</span> You need a custom version of your browser where performance.rdtsc is defined. <br> This is not currently the case";
+  }
+
+</script>
