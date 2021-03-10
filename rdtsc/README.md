@@ -6,3 +6,5 @@ This method calls the native RDTSC instruction, which returns a cycle accurate t
 To prevent Out of Order execution messing with our measurements, `performance.rdtsc` also features memory fences (`mfence` instruction) during the execution.
 
 You can find patches to apply necessary modifications to Chromium and Firefox in the `diffs` folder. The patches were computed for Firefox 81 and Chromium 84 so they may not work for all versions as timers module have changed quite a lot, but by pasting the code to the right place you should be able to build other versions.
+
+You can also find pre-built versions of Chromium 84 and Firefox 81 for Linux-x86_64 on [the release page of our github](https://github.com/thomasrokicki/in-search-of-lost-time/releases/tag/1.0)
